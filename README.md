@@ -17,21 +17,29 @@ pip install langchain-mcts
 ## Uso Básico
 
 ```python
-from langchain_mcts import MCTSAgent, mcts_search, create_mcts_chain
+from langchain_mcts import MCTSAgent
+from langchain_groq import ChatGroq
+import os
+from getpass import getpass
 
-# Crear agente MCTS
-agent = MCTSAgent()
+# Securely get the Groq API key
+if "GROQ_API_KEY" not in os.environ:
+    os.environ["GROQ_API_KEY"] = getpass("Enter your Groq API key: ")
 
-# Realizar búsqueda MCTS
-result = agent.search("¿Cuál es la mejor estrategia?")
-print(result)  # 🚧 Esta función está en desarrollo - MCTS search functionality coming soon!
+# 1. Initialize the Groq language model
+# You can choose different models like "llama3-8b-8192" or "llama3-70b-8192"
+llm = ChatGroq(model_name="llama3-8b-8192")
 
-# Función de conveniencia
-result = mcts_search("Mi query")
-print(result)  # 🚧 MCTS search para 'Mi query' está en desarrollo - Coming soon!
+# 2. Create the MCTS agent and provide the model
+agent = MCTSAgent(model=llm)
 
-# Crear cadena MCTS
-chain = create_mcts_chain()
+# 3. Perform the MCTS search
+# This will now work because the agent has a model
+try:
+    result = agent.search("¿Cuál es la mejor estrategia para aprender un nuevo idioma?")
+    print(result)
+except Exception as e:
+    print(f"An error occurred during the MCTS search: {e}")
 ```
 
 ## 🆕 Nuevas funcionalidades implementadas
