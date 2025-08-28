@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "langchain-mcts"
-version = "0.1.0"
+version = "0.2.0"
 description = "Monte Carlo Tree Search integration for LangChain"
 authors = [{name = "Tu Nombre", email = "tu@email.com"}]
 license = {text = "MIT"}
