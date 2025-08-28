@@ -34,19 +34,48 @@ print(result)  # 🚧 MCTS search para 'Mi query' está en desarrollo - Coming s
 chain = create_mcts_chain()
 ```
 
+## 🆕 Nuevas funcionalidades implementadas
+
+- **Implementación básica del algoritmo MCTS**: El núcleo del árbol de búsqueda Monte Carlo Tree Search (MCTS), con selección, expansión, simulación y retropropagación, ya está funcional para respuestas de modelos de lenguaje.
+- **Integración directa con modelos de LangChain**: Ya puedes usar tus propios modelos (`BaseLanguageModel`) al crear agentes o ejecutar búsquedas MCTS.
+- **Funciones de conveniencia mejoradas**: 
+  - `mcts_search(query, model, iterations, seed_answers, ...)`: Ejecuta una búsqueda MCTS personalizada en una sola línea.
+  - `create_mcts_chain(model, ...)`: Genera un agente MCTS configurado listo para integrarse en cadenas LangChain.
+- **Sistema de evaluación y mejora de respuestas**: El agente puede solicitar una crítica, mejorar la respuesta paso a paso y puntuar su calidad automáticamente.
+- **Soporte para respuestas semilla personalizadas**: Puedes dar respuestas iniciales para guiar la búsqueda.
+- **Cobertura de tests y ejemplos de integración**: Se agregaron pruebas de integración y ejemplos de flujo de trabajo de extremo a extremo usando mocks.
+
+## Ejemplo de uso actualizado
+
+```python
+from langchain_mcts import MCTSAgent, mcts_search, create_mcts_chain
+
+# Crear agente con un modelo personalizado
+agent = MCTSAgent(model=mi_llm)
+
+# Realizar búsqueda avanzada MCTS
+result = agent.search("¿Cuál es la mejor estrategia?", iterations=5)
+print(result)
+
+# Usar función de conveniencia
+result = mcts_search("Mi query", model=mi_llm, iterations=3, seed_answers=["Respuesta 1", "Respuesta 2"])
+print(result)
+
+# Integración directa con LangChain
+chain = create_mcts_chain(model=mi_llm)
+```
+
 ## Funciones Disponibles
 
 ### `MCTSAgent`
 Clase principal para agente MCTS:
-- `search(query, iterations=100)`: Realiza búsqueda MCTS
-- `expand_node(node)`: Expande nodos en el árbol MCTS
-- `simulate(node)`: Simula desde un nodo
-- `backpropagate(path, value)`: Propaga valores hacia atrás
+- `search(query, iterations=100, seed_answers=None)`: Realiza búsqueda MCTS avanzada.
+- Métodos internos para expansión, simulación, crítica y mejora de respuestas.
 
-### `mcts_search(query, model=None, **kwargs)`
+### `mcts_search(query, model, iterations=2, seed_answers=None, ...)`
 Función de conveniencia para búsqueda MCTS rápida.
 
-### `create_mcts_chain(model=None, **kwargs)`
+### `create_mcts_chain(model, ...)`
 Crea una cadena MCTS para integración con LangChain.
 
 ### `MCTSNode`
@@ -55,15 +84,22 @@ Representa un nodo en el árbol MCTS con métodos para:
 - Actualización de estadísticas
 - Verificación de nodos hoja
 
-## Características Planificadas
+### **Nuevos**
+- Métodos para mejorar (`improve_answer`) y puntuar (`rate_answer`) respuestas con ayuda del modelo LLM.
+
+## Características Planificadas (actualizado)
 
 - ✅ Estructura base de la librería
-- 🚧 Implementación completa de MCTS
-- 🚧 Integración con modelos LangChain
-- 🚧 Optimización de políticas de búsqueda
-- 🚧 Soporte para diferentes tipos de problemas
-- 🚧 Paralelización de búsqueda
+- ✅ Implementación básica de MCTS y funciones de conveniencia
+- ✅ Soporte para respuestas semilla personalizadas
+- ✅ Evaluación y mejora automática de respuestas con LLM
+- 🚧 Integración avanzada con modelos LangChain (cadenas y herramientas)
+- 🚧 Optimización y tunning de políticas de búsqueda
+- 🚧 Soporte para diferentes tipos de problemas y dominios
+- 🚧 Paralelización de búsqueda y optimización de rendimiento
 - 🚧 Métricas y visualización
+- 🚧 Ejemplos avanzados de integración y tutoriales
+- 🚧 Mejoras de interfaz para usuarios no técnicos
 
 ## Desarrollo
 
